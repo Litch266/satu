@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsip Rahasia</title>
+    <style>
+        /* CSS Styles */
+        :root {
+            --primary-color: #8B0000; /* Merah Marun Tua */
+            --secondary-color: #DAA520; /* Emas Tua */
+            --dark-color: #1A1A1A; /* Hitam Pekat */
+            --light-color: #F5F5F5; /* Putih Gading */
+            --accent-color: #006400; /* Hijau Tua */
+            --text-muted: #AAAAAA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            line-height: 1.6;
+            /* Menggunakan gambar latar belakang yang lebih tematik (contoh) */
+            background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&q=80&w=1770'); /* Contoh gambar nuansa gelap/misterius */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            /* Background semi-transparan agar teks tetap terbaca */
+            background-color: rgba(0, 0, 0, 0.85);
+            border-left: 2px solid var(--secondary-color);
+            border-right: 2px solid var(--secondary-color);
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -8px; /* Sedikit lebih jauh */
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--secondary-color);
+            opacity: 0.7;
+        }
+
+        h1 {
+            font-size: 2.8rem; /* Sedikit lebih besar */
+            color: var(--secondary-color);
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+            letter-spacing: 3px;
+            font-variant: small-caps; /* Memberi kesan formal */
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .warning {
+            background-color: rgba(139, 0, 0, 0.4); /* Sedikit lebih transparan */
+            border-left: 5px solid var(--primary-color);
+            padding: 15px 20px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #ddd; /* Warna teks sedikit lebih terang */
+        }
+
+        .story-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Sedikit lebih lebar */
+            gap: 30px; /* Jarak antar kartu */
+            margin-top: 40px;
+        }
+
+        .story-card { /* Menggunakan article */
+            background: linear-gradient(to bottom right, #2a2a2a, #111);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px; /* Sudut lebih halus */
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow dasar */
+        }
+
+        .story-card:hover {
+            transform: translateY(-8px) scale(1.02); /* Efek angkat dan sedikit membesar */
+            box-shadow: 0 12px 25px rgba(var(--primary-color-rgb, 139, 0, 0), 0.4); /* Shadow lebih menonjol saat hover, butuh var rgb */
+        }
+        /* Menambahkan variable RGB untuk shadow */
+        :root {
+            --primary-color-rgb: 139, 0, 0;
+        }
+
+
+        .story-card::before {
+            content: "RAHASIA";
+            position: absolute;
+            top: 15px;
+            right: -30px; /* Mulai dari luar */
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3px 35px; /* Lebih panjang */
+            font-size: 0.75rem;
+            border-radius: 3px;
+            transform: rotate(45deg); /* Diputar */
+            transform-origin: top right;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .story-card h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.4rem; /* Sedikit lebih besar */
+            border-bottom: 1px dashed var(--secondary-color);
+            padding-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .story-card .era {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 10px; /* Padding sedikit lebih besar */
+            border-radius: 4px;
+            font-size: 0.85rem; /* Sedikit lebih besar */
+            margin-bottom: 15px; /* Jarak bawah */
+            font-weight: bold;
+        }
+
+        .story-card .excerpt {
+            color: #DDD;
+            font-size: 0.95rem; /* Sedikit lebih besar */
+            margin-bottom: 20px;
+            min-height: 60px; /* Beri tinggi minimum agar rata */
+        }
+
+        .story-card .read-more {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            border: 1px solid var(--secondary-color);
+            padding: 8px 18px; /* Padding lebih besar */
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            background-color: transparent; /* Pastikan transparan awal */
+            text-align: center;
+            width: 100%; /* Membuat tombol memenuhi lebar */
+            margin-top: auto; /* Dorong ke bawah jika ada ruang */
+        }
+
+        .story-card .read-more:hover {
+            background-color: var(--secondary-color);
+            color: black;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(var(--secondary-color-rgb, 218, 165, 32), 0.5); /* Butuh var rgb */
+        }
+        /* Menambahkan variable RGB untuk shadow */
+        :root {
+            --secondary-color-rgb: 218, 165, 32;
+        }
+
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); /* Lebih gelap */
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 60px 20px; /* Padding atas lebih banyak */
+            animation: fadeIn 0.5s ease; /* Animasi muncul */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            max-width: 850px; /* Sedikit lebih lebar */
+            margin: 0 auto;
+            background-color: #1c1c1c; /* Warna background konten modal sedikit beda */
+            padding: 40px;
+            border: 2px solid var(--primary-color);
+            position: relative;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(var(--primary-color-rgb, 139, 0, 0), 0.5);
+            animation: slideIn 0.5s ease; /* Animasi slide */
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--secondary-color);
+            font-size: 2rem; /* Lebih besar */
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .close-modal:hover {
+            transform: scale(1.2);
+            color: var(--primary-color);
+        }
+
+        .modal h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal .era {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Pemisah visual */
+        .modal hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(218, 165, 32, 0), rgba(218, 165, 32, 0.75), rgba(218, 165, 32, 0));
+            margin: 25px 0;
+        }
+
+        .modal .story-content {
+            line-height: 1.8;
+            color: #E0E0E0; /* Teks sedikit lebih terang */
+            font-size: 1.05rem; /* Ukuran font konten modal */
+        }
+
+        .modal .story-content p {
+            margin-bottom: 20px;
+            text-align: justify; /* Rata kiri-kanan */
+        }
+
+        .modal .story-content strong {
+            color: var(--secondary-color); /* Menonjolkan teks penting */
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px; /* Jarak lebih jauh */
+            border-top: 1px solid var(--primary-color);
+            color: #888; /* Warna lebih lembut */
+            font-size: 0.9rem;
+        }
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .story-container {
+                grid-template-columns: 1fr; /* Satu kolom di layar kecil */
+                gap: 20px;
+            }
+            .story-card {
+                padding: 20px;
+            }
+            .modal-content {
+                padding: 25px 20px;
+            }
+            .modal h2 {
+                font-size: 1.7rem;
+            }
+            .modal .story-content {
+                font-size: 1rem;
+            }
+            .close-modal {
+                font-size: 1.8rem;
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ARSIP RAHASIA</h1>
+            <p class="subtitle">Kisah  Operasi Intelijen Di Era Orde Baru dan Sebelumnya</p>
+        </header>
+
+        <div class="warning">
+            <p><strong>PERINGATAN:</strong> Beberapa Cerita mengandung Hal Sensitif Dokumen Ini Di Buat Dengan privasi Dan Data-Data Terlibat Sudah Ada</p>
+        </div>
+
+        <div class="story-container">
+            <!-- Cerita 1 -->
+            <article class="story-card" onclick="openModal('modal1')">
+                <span class="era">Orde Baru</span>
+                <h2>Operasi Woyla: Pembajakan Garuda Indonesia 1981</h2>
+                <p class="excerpt">Kisah menegangkan di balik operasi senyap Kopassus (saat itu Kopassandha) untuk membebaskan sandera pesawat Garuda DC-9 di Bangkok...</p>
+                <a class="read-more">Baca Selengkapnya</a>
+            </article>
+
+            <!-- Cerita 2 -->
+            <article class="story-card" onclick="openModal('modal2')">
+                <span class="era">Orde Lama</span>
+                <h2>Misi Rahasia ke Yugoslavia 1950-an</h2>
+                <p class="excerpt">Diplomasi senyap Sukarno: Mengirim utusan khusus untuk menemui Tito dan membangun fondasi Gerakan Non-Blok di tengah Perang Dingin...</p>
+                <a class="read-more">Baca Selengkapnya</a>
+            </article>
+
+            <!-- Cerita 3 -->
+            <article class="story-card" onclick="openModal('modal3')">
+                <span class="era">Orde Baru</span>
+                <h2>Infiltran di Timor Timur 1975</h2>
+                <p class="excerpt">Operasi Seroja tak dimulai tiba-tiba. Kisah agen intelijen dan pasukan khusus yang menyamar dan menyusup ke Timor Timur sebelum invasi...</p>
+                <a class="read-more">Baca Selengkapnya</a>
+            </article>
+
+            <!-- Cerita 4 -->
+            <article class="story-card" onclick="openModal('modal4')">
+                <span class="era">Orde Lama</span>
+                <h2>Operasi Trikora: Mata-Mata di Papua</h2>
+                <p class="excerpt">Di balik komando Presiden Sukarno, agen-agen intelijen menyebar di Irian Barat (Papua), mengumpulkan informasi dan menggalang dukungan...</p>
+                <a class="read-more">Baca Selengkapnya</a>
+            </article>
+
+            <!-- Cerita 5 -->
+            <article class="story-card" onclick="openModal('modal5')">
+                <span class="era">Orde Baru</span>
+                <h2>Jaringan Intel di Singapura 1980-an</h2>
+                <p class="excerpt">Mengawasi pergerakan lawan politik dan eksil di luar negeri. Operasi intelijen senyap di Singapura untuk memantau dan mengendalikan...</p>
+                <a class="read-more">Baca Selengkapnya</a>
+            </article>
+
+            <!-- Cerita 6 -->
+            <article class="story-card" onclick="openModal('modal6')">
+                <span class="era">Transisi</span>
+                <h2>Pembocoran Dokumen Krusial 1998</h2>
+                <p class="excerpt">Di tengah gejolak Reformasi, dokumen-dokumen rahasia kabinet dan militer bocor ke publik. Siapa dalangnya dan apa dampaknya?</p>
+                <a class="read-more">Baca Selengkapnya</a>
+            </article>
+        </div>
+
+        <!-- === MODAL CONTAINERS === -->
+
+        <!-- Modal Cerita 1 -->
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal1')" aria-label="Tutup">×</span>
+                <h2>Operasi Woyla: Pembajakan Garuda Indonesia 1981</h2>
+                <span class="era">Orde Baru</span>
+                <hr>
+                <div class="story-content">
+                    <p>Pada 28 Maret 1981, pesawat Garuda Indonesia DC-9 "Woyla" yang terbang dari Jakarta menuju Medan via Palembang dibajak oleh lima teroris yang menamakan diri Komando Jihad. Pesawat dipaksa terbang ke Penang, Malaysia, lalu ke Bandara Don Mueang, Bangkok, Thailand.</p>
+                    <p>Pemerintah Indonesia di bawah Presiden Soeharto menolak negosiasi dan memutuskan operasi militer. Tim antiteror Kopassandha (kini Kopassus) di bawah pimpinan Letkol Inf. Sintong Panjaitan diterbangkan secara rahasia ke Bangkok.</p>
+                    <p>Pada dini hari 31 Maret 1981, dengan sandi "Operasi Woyla", pasukan menyerbu pesawat dalam waktu sekitar 3 menit. Semua pembajak berhasil dilumpuhkan (3 tewas di tempat, 2 tewas kemudian). Pilot Kapten Herman Rante dan satu anggota Kopassandha, Achmad Kirang, gugur dalam operasi ini. Satu penumpang, seorang wanita, juga terluka parah dan meninggal beberapa hari kemudian. Operasi ini dianggap sukses besar dan meningkatkan reputasi Kopassus di dunia internasional.</p>
+                    <p><strong>Catatan:</strong> Detail mengenai motif asli pembajak, kemungkinan keterlibatan pihak lain, dan aspek intelijen pra-operasi masih menjadi subyek diskusi dan analisis hingga kini.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cerita 2 -->
+        <div id="modal2" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal2')" aria-label="Tutup">×</span>
+                <h2>Misi Rahasia ke Yugoslavia 1950-an</h2>
+                <span class="era">Orde Lama</span>
+                 <hr>
+                <div class="story-content">
+                    <p>Di tengah ketegangan Perang Dingin, Presiden Sukarno melihat kesamaan visi dengan Presiden Yugoslavia, Josip Broz Tito, yang juga menolak tunduk pada Blok Barat maupun Blok Timur. Pada pertengahan 1950-an, sebelum Konferensi Asia-Afrika (KAA) 1955 di Bandung mencapai puncaknya, Sukarno mengirim utusan-utusan rahasia untuk menjajaki kerja sama lebih erat.</p>
+                    <p>Salah satu misi penting terjadi setelah KAA, sekitar tahun 1956. Seorang diplomat senior yang identitasnya masih dirahasiakan (beberapa sumber menyebut tokoh seperti Soebandrio atau Roeslan Abdulgani memainkan peran kunci dalam diplomasi ini, meski tidak selalu dalam misi tunggal) bertemu langsung dengan Tito di lokasi terpencil, kemungkinan besar di Kepulauan Brijuni.</p>
+                    <p>Pembicaraan berfokus pada pembentukan kekuatan politik alternatif, yang kemudian menjadi cikal bakal Gerakan Non-Blok (GNB). Indonesia mencari dukungan Yugoslavia untuk isu Irian Barat, sementara Yugoslavia melihat Indonesia sebagai mitra strategis di Asia. Pertukaran informasi intelijen mengenai pergerakan kekuatan besar dan dukungan logistik terbatas (seperti pelatihan militer atau bantuan teknis) juga dibahas secara rahasia.</p>
+                    <p><strong>Catatan:</strong> Keberhasilan diplomasi rahasia ini sangat krusial dalam menggalang kekuatan negara-negara berkembang dan melahirkan GNB pada tahun 1961 di Beograd, Yugoslavia.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cerita 3 -->
+        <div id="modal3" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal3')" aria-label="Tutup">×</span>
+                <h2>Infiltran di Timor Timur 1975</h2>
+                <span class="era">Orde Baru</span>
+                 <hr>
+                <div class="story-content">
+                    <p>Menjelang Operasi Seroja pada Desember 1975, intelijen Indonesia (terutama BAKIN dan intelijen militer seperti Kopassandha) telah aktif melakukan operasi klandestin di Timor Timur. Tujuannya beragam: mengumpulkan data intelijen mengenai kekuatan Fretilin, memetakan medan, menggalang dukungan dari faksi pro-integrasi (Apodeti, UDT), dan melakukan sabotase atau operasi 'false flag' untuk menciptakan justifikasi intervensi.</p>
+                    <p>Agen-agen menyamar sebagai pedagang, nelayan, atau bahkan pekerja bantuan. Beberapa anggota pasukan khusus dari Kopassandha dan RPKAD (sebelumnya) juga disusupkan untuk melatih milisi pro-integrasi dan melakukan operasi pengintaian mendalam (deep reconnaissance).</p>
+                    <p>Operasi ini penuh risiko. Beberapa agen tertangkap atau hilang. Informasi yang mereka kumpulkan, meskipun tidak selalu akurat, menjadi dasar bagi perencanaan Operasi Seroja. Namun, operasi klandestin ini juga berkontribusi pada eskalasi konflik internal di Timor Timur sebelum invasi besar-besaran.</p>
+                    <p><strong>Catatan:</strong> Peran intelijen dalam fase pra-Seroja sangat kontroversial dan dianggap oleh banyak pihak sebagai pemicu konflik yang lebih luas. Detail operasi ini banyak tertutup rapat dalam arsip militer.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cerita 4 -->
+        <div id="modal4" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal4')" aria-label="Tutup">×</span>
+                <h2>Operasi Trikora: Mata-Mata di Papua</h2>
+                <span class="era">Orde Lama</span>
+                 <hr>
+                <div class="story-content">
+                    <p>Operasi Trikora (Tri Komando Rakyat) yang dicanangkan Presiden Sukarno pada 19 Desember 1961 untuk merebut Irian Barat (Papua) dari Belanda tidak hanya mengandalkan kekuatan militer konvensional dan diplomasi. Operasi intelijen memainkan peran sentral.</p>
+                    <p>Badan Pusat Intelijen (BPI) yang dipimpin oleh Soebandrio mengerahkan agen-agennya ke berbagai wilayah di Irian Barat. Mereka bertugas memetakan kekuatan militer Belanda, mencari titik pendaratan potensial, mengidentifikasi tokoh-tokoh lokal yang bisa diajak bekerja sama atau yang perlu diwaspadai, serta menyebarkan propaganda pro-Indonesia.</p>
+                    <p>Selain BPI, intelijen Angkatan Darat, Laut, dan Udara juga aktif. Banyak sukarelawan yang diterjunkan ke Irian Barat melalui operasi infiltrasi udara dan laut memiliki misi ganda, termasuk pengumpulan informasi. Mereka menghadapi medan yang sulit, patroli Belanda yang ketat, dan tantangan komunikasi.</p>
+                    <p><strong>Catatan:</strong> Informasi dari para agen ini, meskipun seringkali terfragmentasi, membantu Komando Mandala pimpinan Mayor Jenderal Soeharto dalam merencanakan operasi militer selanjutnya, yang akhirnya berujung pada Perjanjian New York 1962.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cerita 5 -->
+        <div id="modal5" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal5')" aria-label="Tutup">×</span>
+                <h2>Jaringan Intel di Singapura 1980-an</h2>
+                <span class="era">Orde Baru</span>
+                 <hr>
+                <div class="story-content">
+                    <p>Singapura, sebagai pusat keuangan dan transit regional, menjadi lokasi strategis bagi operasi intelijen Indonesia pada era Orde Baru, terutama pada dekade 1980-an. Fokus utama adalah memantau aktivitas kelompok-kelompok oposisi, aktivis, mahasiswa, dan eksil politik Indonesia yang berada atau sering transit di negara tersebut.</p>
+                    <p>Operasi ini diduga melibatkan berbagai badan intelijen, termasuk BAKIN (Badan Koordinasi Intelijen Negara) dan BAIS (Badan Intelijen Strategis TNI). Agen-agen ditempatkan di bawah berbagai samaran, termasuk sebagai staf kedutaan, pengusaha, atau bahkan mahasiswa. Mereka membangun jaringan informan lokal dan melakukan pengawasan (surveillance) terhadap target-target tertentu.</p>
+                    <p>Selain pengawasan pasif, ada dugaan operasi yang lebih aktif, seperti upaya 'pendekatan' atau 'pembinaan' terhadap tokoh-tokoh tertentu, serta pengumpulan informasi mengenai potensi ancaman ekonomi atau keamanan yang berasal dari aktivitas di Singapura. Hubungan intelijen antara Indonesia dan Singapura sendiri bersifat kompleks, terkadang kooperatif, terkadang kompetitif.</p>
+                    <p><strong>Catatan:</strong> Sifat operasi intelijen di negara lain sangat sensitif. Bukti konkret mengenai detail operasi ini sulit didapatkan dan seringkali hanya muncul dalam bentuk kesaksian terbatas atau dokumen yang bocor secara tidak sengaja.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cerita 6 -->
+        <div id="modal6" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal6')" aria-label="Tutup">×</span>
+                <h2>Pembocoran Dokumen Krusial 1998</h2>
+                <span class="era">Transisi</span>
+                 <hr>
+                <div class="story-content">
+                    <p>Periode transisi dari Orde Baru ke Reformasi pada tahun 1998 diwarnai oleh ketidakpastian politik dan perebutan pengaruh. Di tengah situasi ini, sejumlah dokumen yang diklasifikasikan sebagai rahasia negara tiba-tiba bocor ke tangan media, aktivis, atau faksi politik tertentu.</p>
+                    <p>Dokumen-dokumen ini bervariasi, mulai dari notulensi rapat kabinet terbatas mengenai penanganan krisis moneter, rencana kontingensi keamanan, data intelijen mengenai pergerakan mahasiswa dan aktivis, hingga transkrip pembicaraan pejabat tinggi. Kebocoran ini seringkali dimanfaatkan untuk tujuan politik: menjatuhkan lawan, membangun opini publik, atau bahkan memicu instabilitas lebih lanjut.</p>
+                    <p>Siapa pelaku pembocoran ini seringkali sulit dilacak. Dugaan mengarah pada berbagai pihak: faksi-faksi yang bertikai di dalam elite kekuasaan (militer, intelijen, birokrasi), individu yang kecewa atau mencari keuntungan, atau bahkan 'whistleblower' yang bertindak atas dasar idealisme. Analisis terhadap jenis dokumen yang bocor dan timing kemunculannya seringkali memberikan petunjuk mengenai kemungkinan sumber dan motifnya.</p>
+                    <p><strong>Catatan:</strong> Fenomena kebocoran dokumen pada masa krisis politik menunjukkan adanya perebutan narasi dan akses informasi di tingkat elite, serta rapuhnya sistem kerahasiaan negara pada saat transisi kekuasaan.</p>
+                </div>
+            </div>
+        </div>
+
+
+        <footer>
+            <p>© 2025 Arsip Rahasia Indonesia | Hak Cipta Dilindungi Republik Indonesia</p>
+            <p>Disclaimer: Ini Hanya Untuk Edukasi Bukan propaganda</p>
+        </footer>
+    </div>
+
+    <script>
+        // Fungsi untuk membuka modal
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Mencegah scroll body saat modal terbuka
+            } else {
+                console.error("Modal with ID: " + modalId + " not found.");
+            }
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal(modalId) {
+             const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Mengembalikan scroll body
+            }
+        }
+
+        // Menutup modal jika user mengklik di luar area konten modal
+        window.onclick = function(event) {
+            // Cek apakah elemen yang diklik memiliki kelas 'modal'
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Mengembalikan scroll body
+            }
+        }
+
+        // Menutup modal dengan tombol Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (modal.style.display === 'block') {
+                        closeModal(modal.id);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
